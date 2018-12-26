@@ -1,0 +1,16 @@
+html, body
+{
+    padding: 0px;
+    margin: 0px;
+    overflow-x: hidden;
+}
+
+#map {
+    height: 100vh;  /* The height is 400 pixels */
+    width: 100vw;  /* The width is the width of the web page */
+}
+
+.center
+{
+    text-align: center;
+}

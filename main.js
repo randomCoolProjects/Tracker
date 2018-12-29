@@ -25,8 +25,7 @@ navigator.getBattery().then(function (battery) {
 function showLoc()
 {
     document.getElementById("lat").innerText = latitude;
-    document.getElementById("lng").innerText = longitude;
-    logToDatabase();
+    document.getElementById("lng").innerText = longitude;;
 }
 
 function initMap() {
@@ -87,17 +86,6 @@ function loadScript(url, callback) {
 
     // Fire the loading
     head.appendChild(script);
-}
-
-function logToDatabase()
-{
-    var items = _data;
-    items.latitude = latitude;
-    items.longitude = longitude;
-    items.BatteryLevel = BatteryLevel;
-    items.ipv4 = IPv4;
-    items.browser = window.navigator.userAgent;
-    writeUserData(IPv4, items);
 }
 
 $.getJSON('https://ipapi.co/json/', function (data) {
